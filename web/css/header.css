@@ -1,0 +1,55 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: #F3EDF7;
+}
+
+.menu-list {
+    display: flex;
+    gap: 1rem;
+}
+
+.menu__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.5rem;
+}
+
+.menu__item-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.2rem;
+    border-radius: 0.5rem;
+}
+
+.menu__item-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu__item:hover {
+    cursor: pointer;
+}
+
+.menu__item:hover .menu__item-container {
+    background-color: #d6d1da
+}
+
+.menu__item:hover #settings-icon {
+    animation: rotate-infinite 2s infinite linear;
+}
+
+@keyframes rotate-infinite {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

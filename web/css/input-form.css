@@ -1,0 +1,110 @@
+.input-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.photo-preview {
+  display: flex;
+  width: 30%;
+  margin-right: 5%;
+}
+
+.photo-preview__container {
+  border-radius: 1rem;
+  max-height: 201px;
+  width: 100%;
+}
+
+.photo-preview__container>img {
+  min-height: 200px;
+  max-height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.input-form__buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: space-between;
+  width: 40%;
+}
+
+.input-form__select-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+/* Основные стили кнопки */
+.input-form__button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5%;
+  background-color: transparent;
+  border-radius: 2rem;
+  border: 1px solid #79747E;
+  width: 100%;
+  padding: 0rem 1rem 0rem 1rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-form__button span {
+  font-weight: 600;
+  color: #6750A4;
+}
+
+/* Стили при наведении */
+.input-form__button:hover {
+  background-color: rgba(103, 80, 164, 0.1);
+}
+
+/* Стили при фокусе */
+.input-form__button:focus {
+  box-shadow: 0 0 0 3px rgba(103, 80, 164, 0.3);
+}
+
+/* Стили при нажатии */
+.input-form__button:active {
+  background-color: rgba(103, 80, 164, 0.2);
+  transform: scale(0.95);
+}
+
+.plus-icon {
+  font-size: 2em;
+}
+
+.input-form__button_submit {
+  color: #FFFFFF;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  background-color: #6750A4;
+}
+
+/* Стили при наведении */
+.input-form__button_submit:hover {
+  background-color: #4d3b7c;
+}
+
+/* Стили при фокусе */
+.input-form__button_submit:focus {
+  box-shadow: 0 0 0 3px rgba(103, 80, 164, 0.3);
+}
+
+/* Стили при нажатии */
+.input-form__button_submit:active {
+  background-color: rgb(141, 109, 227);
+  transform: scale(0.95);
+}
+
+.input-hidden {
+  display: none;
+}

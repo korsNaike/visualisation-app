@@ -1,0 +1,30 @@
+* {
+    box-sizing: border-box;
+    transition: 0.2s ease-in-out;
+}
+
+html {
+    width: 100%;
+    margin: 0;
+}
+
+body {
+    width: 100%;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #FEF7FF;
+}
+
+.container {
+    width: 100%;
+    max-width: 1920px;
+    background-color: #FEF7FF;
+}
+
+.main {
+    display: flex;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-top: 1rem;
+    width: 100%;
+}
