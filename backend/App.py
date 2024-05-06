@@ -1,9 +1,18 @@
-from PIL import Image
 import base64
 import io
 import os
 import json
 from datetime import datetime
+import numpy as np
+import torch
+from torchvision.models import alexnet, vgg16, resnet18, resnet152
+import torchvision.transforms.functional as TF
+import torchvision.transforms as TRANSFORMS
+from PIL import Image
+import matplotlib.pyplot as plt
+from torchvision.transforms import ToTensor, Resize, Compose
+from .visualisation.core.utils import image_net_preprocessing, image_net_postprocessing
+from .visualisation.core import *
 
 class App:
 
@@ -56,3 +65,64 @@ class App:
             json.dump(json_data, f)
 
         return resized_base64_image
+    
+    def visualize(modelName = 'VGG16', method = 'GradCam', number = 0):
+        if modelName == 'VGG16':
+            model = vgg16(weights='VGG16_Weights.IMAGENET1K_V1')
+        
+        input_image = App.getImageTensor(number)
+
+        device = App.getDevice()
+        vis = GradCam(model.to(device), device)
+
+        img = vis(input_image.to(device), None,
+          target_class=None,
+          postprocessing=image_net_postprocessing,
+          guide=False)
+        
+        return App.convertImgFromTensorToBase64(img[0])
+        
+
+
+    def getImageTensor(number):
+        pathToImage = os.path.join(os.path.dirname(__file__), '../temp-images/' + App.getImgNameByNumber(number))
+        img = Image.open(pathToImage)
+        # resize the image and make it a tensor
+        input_image = Compose([Resize((224,224)), ToTensor(), image_net_preprocessing])(img)
+        # add 1 dim for batch
+        input_image = input_image.unsqueeze(0)
+
+        return input_image
+    
+
+    def getDevice():
+        return torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    
+    def convertImgFromTensorToBase64(tensor):
+        tensor = tensor.squeeze()
+        if len(tensor.shape) > 2: tensor = tensor.permute(1, 2, 0)
+        # Преобразование tensor в numpy array
+        numpy_array = tensor.cpu().numpy()
+
+        # Преобразование numpy array в изображение PIL
+        image = Image.fromarray(np.uint8(numpy_array * 255))
+
+        # Преобразование изображения в байтовый поток
+        buffer = io.BytesIO()
+        image.save(buffer, format="PNG")
+        buffer.seek(0)
+
+        # Кодирование байтового потока в base64
+        encoded_image = base64.b64encode(buffer.read())
+        encoded_image_str = encoded_image.decode('utf-8')
+
+        return encoded_image_str
+    
+    def getImgNameByNumber(number):
+        try:
+            with open('temp_files.json', 'r') as f:
+                json_data = json.load(f)
+        except FileNotFoundError:
+            return ''
+
+        return json_data["temp_files"][number]

@@ -11,6 +11,10 @@ from backend.App import App
 def loadImage(base64_image, number = 0):
     return App.saveLoadImage(base64_image=base64_image, number=number)
 
+@eel.expose
+def visualize(model = 'VGG16', method = 'GradCam', number = 0):
+    return App.visualize(modelName=model, method=method, number=number)
+
 
 eel.init('web')
 

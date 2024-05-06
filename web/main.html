@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Прик</title>
+    <title>Визуализация работы нейронной сети</title>
 
     <script src="eel.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,32 +61,61 @@
                     <!-- Блок с превьюшкой фото -->
                     <div class="photo-preview">
                         <div class="photo-preview__container">
-                            <img src="./resources/temp-images/wallpapersden.com_naruto-itachi-uchiha-sharingan_7680x4320.jpg" alt="photo-preview">
+                            <img src="./resources/images/zaglushka.png" alt="photo-preview">
                         </div>
                     </div>
                     <!-- Блок с кнопками -->
                     <div class="input-form__buttons">
                         <div class="input-form__select-buttons">
-                            <button class="input-form__button input-form__button_select" type="button" id="model-button">
-                                <span class="plus-icon">+</span>
-                                <span class="button-text">Выберите модель</span>
-                            </button>
-                            <button class="input-form__button input-form__button_select" type="button" id="photo-button">
+                            <!-- Селектор для выбора модели -->
+                            <div class="select-menu">
+                                <button class="input-form__button input-form__button_select select-btn" type="button"
+                                    id="model-button">
+                                    <div class="sBtn-text">
+                                        <span class="plus-icon">+</span>
+                                        <span class="button-text">Выберите модель</span>
+                                    </div>
+                                </button>
+
+                                <ul class="options">
+                                    <li class="option">
+                                        <i class="bx bxl-instagram-alt" style="color: #E1306C;"></i>
+                                        <span class="option-text">Instagram</span>
+                                    </li>
+                                    <li class="option">
+                                        <i class="bx bxl-linkedin-square" style="color: #0E76A8;"></i>
+                                        <span class="option-text">Linkedin</span>
+                                    </li>
+                                    <li class="option">
+                                        <i class="bx bxl-facebook-circle" style="color: #4267B2;"></i>
+                                        <span class="option-text">Facebook</span>
+                                    </li>
+                                    <li class="option">
+                                        <i class="bx bxl-twitter" style="color: #1DA1F2;"></i>
+                                        <span class="option-text">Twitter</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Кнопка для загрузки фото -->
+                            <button class="input-form__button input-form__button_select" type="button"
+                                id="photo-button">
                                 <span class="plus-icon">+</span>
                                 <span class="button-text">Загрузите изображение</span>
                             </button>
                         </div>
-                        <button type="submit" class="input-form__button input-form__button_submit">Визуализировать</button>
+                        <button type="submit"
+                            class="input-form__button input-form__button_submit">Визуализировать</button>
                     </div>
                     <input type="hidden" class="input-hidden input-hidden_model">
                     <input type="file" class="input-hidden input-hidden_photo" accept="image/*">
                 </div>
 
-
+                
             </div>
         </main>
     </div>
     <script src="./js/Visualisation.js"></script>
+    <script src="./js/visualize.js"></script>
 </body>
 
 </html>
