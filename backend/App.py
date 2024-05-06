@@ -11,8 +11,9 @@ import torchvision.transforms as TRANSFORMS
 from PIL import Image
 import matplotlib.pyplot as plt
 from torchvision.transforms import ToTensor, Resize, Compose
+
+from backend.visualize.GradCam import GradCam
 from .visualisation.core.utils import image_net_preprocessing, image_net_postprocessing
-from .visualisation.core import *
 
 class App:
 
@@ -75,7 +76,7 @@ class App:
         device = App.getDevice()
         vis = GradCam(model.to(device), device)
 
-        img = vis(input_image.to(device), None,
+        img = vis.visualize(input_image.to(device), None,
           target_class=None,
           postprocessing=image_net_postprocessing,
           guide=False)
