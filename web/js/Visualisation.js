@@ -23,7 +23,7 @@ class Visualisation {
     /**
      * @var {HTMLElement}
      */
-    model_button;
+    method_input;
 
     /**
      * @var {HTMLElement}
@@ -31,24 +31,40 @@ class Visualisation {
     preview_photo;
 
     /**
-     * @param {string} containerSelector
+     * @var {HTMLElement}
      */
-    constructor(containerSelector) {
+    result_photo;
+
+    /**
+     * @var {HTMLElement}
+     */
+    submit_button;
+
+    /**
+     * @param {string} containerSelector
+     * @param {Number} number
+     */
+    constructor(containerSelector, number = 0) {
         this.container = document.querySelector(containerSelector);
+        this.number = number
         this.init();
     }
 
     init() {
         this.photo_input = this.container.querySelector('.input-hidden_photo');
         this.model_input = this.container.querySelector('.input-hidden_model');
+        this.method_input = this.container.querySelector('.input-hidden_method')
         this.photo_button = this.container.querySelector('#photo-button');
-        this.model_button = this.container.querySelector('#model-button');
         this.preview_photo = this.container.querySelector('.photo-preview__container img');
+        this.result_photo = this.container.querySelector('.visualisation-result__img');
         this.submit_button = this.container.querySelector('.input-form__button_submit');
+        this.layers_input = this.container.querySelector('#layer-range');
 
         this.initImageLoader();
-        this.initSelectorModel();
+        this.initSelect("#model-selector", this.model_input);
+        this.initSelect("#method-selector", this.method_input);
         this.initVisualisation();
+        this.initListenerToModelInput();
     }
 
     /**
@@ -65,7 +81,7 @@ class Visualisation {
 
             reader.onload = () => {
                 const base64Image = reader.result.split(',')[1];
-                eel.loadImage(base64Image)(resizedBase64Image => {
+                eel.loadImage(base64Image, this.number)(resizedBase64Image => {
                     // Создаем объект URL для обработанного изображения
                     const resizedImageUrl = `data:image/png;base64,${resizedBase64Image}`;
 
@@ -81,10 +97,12 @@ class Visualisation {
     }
 
     /**
-     * Инизиализация выборки модели из выпадающего списка
+     * Инициализировать выпадающий список
+     * @param {string} selectSelector 
+     * @param {HTMLElement} inputForValue 
      */
-    initSelectorModel() {
-        const optionMenu = this.container.querySelector(".select-menu"),
+    initSelect(selectSelector, inputForValue) {
+        const optionMenu = this.container.querySelector(selectSelector),
             selectBtn = optionMenu.querySelector(".select-btn"),
             options = optionMenu.querySelectorAll(".option"),
             sBtn_text = optionMenu.querySelector(".sBtn-text");
@@ -103,23 +121,68 @@ class Visualisation {
                 textElement.innerText = selectedOption;
 
                 sBtn_text.innerHTML = textElement.outerHTML;
-                this.model_input.value = selectedOption;
+                inputForValue.value = selectedOption;
+                this.triggerEvent(inputForValue);
 
                 optionMenu.classList.remove("active");
             });
         });
     }
 
+    /**
+     * @param {HTMLElement} element 
+     * @param {string} type 
+     * @param {object} options 
+     */
+    triggerEvent(element, type = 'change', options = { bubbles: true, cancelable: true }) {
+        const event = new Event(type, options);
+        element.dispatchEvent(event);
+    }
+
+    initListenerToModelInput() {
+        this.model_input.addEventListener('change', () => {
+
+            eel.get_available_layers(this.model_input.value)(layers => {
+                console.log(layers);
+
+                let countOfLayers = layers.length - 1;
+                this.layers_input.setAttribute('max', countOfLayers);
+
+                let copy_layer = this.layers_input.cloneNode(true);
+                this.layers_input.parentElement.parentElement.appendChild(copy_layer);
+                this.layers_input.parentElement.remove();
+
+                let tick = Math.floor(countOfLayers / 20);
+                if (tick == 0) {
+                    tick = 1;
+                }
+                
+                let range = new rSlider({
+                    element: "#layer-range",
+                    tick: tick,
+                    data: layers
+                });
+                this.layers_input = copy_layer;
+            })
+        })
+    }
+
     initVisualisation() {
         this.submit_button.addEventListener('click', () => {
-            eel.visualize()(resizedBase64Image => {
+
+            const method = this.method_input.value;
+            const model = this.model_input.value;
+
+            eel.visualize(model, method, this.number)(data => {
+                console.log(data);
+                const resizedBase64Image = data.image;
+
                 // Создаем объект URL для обработанного изображения
                 const resizedImageUrl = `data:image/png;base64,${resizedBase64Image}`;
 
                 // Отображаем обработанное изображение на странице
-                this.preview_photo.src = resizedImageUrl;
-                this.photo_button.querySelector('.plus-icon').innerText = '--------'
-                this.photo_button.querySelector('.button-text').innerText = 'ФЛЕКС'
+                this.result_photo.src = resizedImageUrl;
+                this.container.querySelector('.visualisation-text-result').textContent = data.result;
             });
         });
     }

@@ -68,7 +68,7 @@
                     <div class="input-form__buttons">
                         <div class="input-form__select-buttons">
                             <!-- Селектор для выбора модели -->
-                            <div class="select-menu">
+                            <div class="select-menu" id="model-selector">
                                 <button class="input-form__button input-form__button_select select-btn" type="button"
                                     id="model-button">
                                     <div class="sBtn-text">
@@ -79,20 +79,44 @@
 
                                 <ul class="options">
                                     <li class="option">
-                                        <i class="bx bxl-instagram-alt" style="color: #E1306C;"></i>
-                                        <span class="option-text">Instagram</span>
+                                        <span class="option-text">VGG16</span>
                                     </li>
                                     <li class="option">
-                                        <i class="bx bxl-linkedin-square" style="color: #0E76A8;"></i>
-                                        <span class="option-text">Linkedin</span>
+                                        <span class="option-text">AlexNet</span>
                                     </li>
                                     <li class="option">
-                                        <i class="bx bxl-facebook-circle" style="color: #4267B2;"></i>
-                                        <span class="option-text">Facebook</span>
+                                        <span class="option-text">ResNet152</span>
                                     </li>
                                     <li class="option">
-                                        <i class="bx bxl-twitter" style="color: #1DA1F2;"></i>
-                                        <span class="option-text">Twitter</span>
+                                        <span class="option-text">Другая</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Селектор для выбора метода визуализации -->
+                            <div class="select-menu" id="method-selector">
+                                <button class="input-form__button input-form__button_select select-btn" type="button"
+                                    id="model-button">
+                                    <div class="sBtn-text">
+                                        <span class="plus-icon">+</span>
+                                        <span class="button-text">Выберите метод визуализации</span>
+                                    </div>
+                                </button>
+
+                                <ul class="options">
+                                    <li class="option">
+                                        <span class="option-text">GradCam</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text">CAM</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text">DeepDream</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text">t-SNE</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text">SaliencyMap</span>
                                     </li>
                                 </ul>
                             </div>
@@ -107,15 +131,32 @@
                             class="input-form__button input-form__button_submit">Визуализировать</button>
                     </div>
                     <input type="hidden" class="input-hidden input-hidden_model">
+                    <input type="hidden" class="input-hidden input-hidden_method">
                     <input type="file" class="input-hidden input-hidden_photo" accept="image/*">
                 </div>
 
-                
+                <div class="visualisation-result">
+                    <img class="visualisation-result__img">
+                </div>
+                <div class="visualisation-text-result">
+                    
+                </div>
+
+                <div class="layer-container">
+                    <div class="range-wrap">
+                        <div class="range-slider">
+                            <div class="label-range">Выбор слоя</div>
+                            <input id="layer-range" type="range" name="layer-range" min="0" max="10" step="1"
+                                value="5" />
+                        </div>
+                    </div>
+                    <span class="layer-current"></span>
+                </div>
             </div>
         </main>
     </div>
+    <script src="./js/rSlider.js"></script>
     <script src="./js/Visualisation.js"></script>
-    <script src="./js/visualize.js"></script>
 </body>
 
 </html>

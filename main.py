@@ -12,8 +12,12 @@ def loadImage(base64_image, number = 0):
     return App.saveLoadImage(base64_image=base64_image, number=number)
 
 @eel.expose
-def visualize(model = 'VGG16', method = 'GradCam', number = 0):
-    return App.visualize(modelName=model, method=method, number=number)
+def visualize(model, method = 'GradCam', number = 0, options = {}):
+    return App.visualize(model, method=method, number=number)
+
+@eel.expose
+def get_available_layers(model):
+    return App.get_available_layers(model_name=model)
 
 
 eel.init('web')

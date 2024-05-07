@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from torchvision.transforms import ToTensor, Resize, Compose
 
 from backend.visualize.GradCam import GradCam
+from backend.visualize.ModelFactory import ModelFactory
 from .visualisation.core.utils import image_net_preprocessing, image_net_postprocessing
 
 class App:
@@ -67,9 +68,8 @@ class App:
 
         return resized_base64_image
     
-    def visualize(modelName = 'VGG16', method = 'GradCam', number = 0):
-        if modelName == 'VGG16':
-            model = vgg16(weights='VGG16_Weights.IMAGENET1K_V1')
+    def visualize(model_name, method = 'GradCam', number = 0):
+        model = ModelFactory.create(model_name)
         
         input_image = App.getImageTensor(number)
 
@@ -81,9 +81,7 @@ class App:
           postprocessing=image_net_postprocessing,
           guide=False)
         
-        return App.convertImgFromTensorToBase64(img[0])
-        
-
+        return {'image': App.convertImgFromTensorToBase64(img[0]), 'result': App.get_text_prediction(vis.last_target)}
 
     def getImageTensor(number):
         pathToImage = os.path.join(os.path.dirname(__file__), '../temp-images/' + App.getImgNameByNumber(number))
@@ -94,7 +92,6 @@ class App:
         input_image = input_image.unsqueeze(0)
 
         return input_image
-    
 
     def getDevice():
         return torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -127,3 +124,30 @@ class App:
             return ''
 
         return json_data["temp_files"][number]
+    
+    def get_available_layers(model_name) -> int:
+        '''
+        Получить число доступных слоёв для модели
+        '''
+        model = ModelFactory.create(model_name)
+        layers = []
+        for layer in model.modules():
+            layers.append(layer.__class__.__name__)
+        
+        return layers
+    
+    def get_text_prediction(need_key) -> str:
+        '''
+        Найти нужное значение из словаря imagenet
+        '''
+        path = os.path.join(os.path.dirname(__file__), './../imaganet2human.txt')
+
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f.readlines():
+                key, value = line.split(':')
+                key = int(key.replace('{', '').replace('}', ''))
+                value = value.replace("'", '').replace(",", '')
+                if (key == int(need_key)):
+                    return value
+
+        
