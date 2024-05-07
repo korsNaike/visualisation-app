@@ -57,89 +57,127 @@
             <!-- Контейнер для страницы визуализации -->
             <div class="visualisation" id="first-visualisation">
                 <!-- Блок формы начального ввода перед визуализацией -->
-                <div class="input-form">
-                    <!-- Блок с превьюшкой фото -->
-                    <div class="photo-preview">
-                        <div class="photo-preview__container">
-                            <img src="./resources/images/zaglushka.png" alt="photo-preview">
-                        </div>
-                    </div>
-                    <!-- Блок с кнопками -->
-                    <div class="input-form__buttons">
-                        <div class="input-form__select-buttons">
-                            <!-- Селектор для выбора модели -->
-                            <div class="select-menu" id="model-selector">
-                                <button class="input-form__button input-form__button_select select-btn" type="button"
-                                    id="model-button">
-                                    <div class="sBtn-text">
-                                        <span class="plus-icon">+</span>
-                                        <span class="button-text">Выберите модель</span>
-                                    </div>
-                                </button>
-
-                                <ul class="options">
-                                    <li class="option">
-                                        <span class="option-text">VGG16</span>
-                                    </li>
-                                    <li class="option">
-                                        <span class="option-text">AlexNet</span>
-                                    </li>
-                                    <li class="option">
-                                        <span class="option-text">ResNet152</span>
-                                    </li>
-                                    <li class="option">
-                                        <span class="option-text">Другая</span>
-                                    </li>
-                                </ul>
+                <div class="visualisation__form">
+                    <div class="input-form">
+                        <!-- Блок с превьюшкой фото -->
+                        <div class="photo-preview">
+                            <div class="photo-preview__container">
+                                <img src="./resources/images/zaglushka.png" alt="photo-preview">
                             </div>
-                            <!-- Селектор для выбора метода визуализации -->
-                            <div class="select-menu" id="method-selector">
-                                <button class="input-form__button input-form__button_select select-btn" type="button"
-                                    id="model-button">
-                                    <div class="sBtn-text">
-                                        <span class="plus-icon">+</span>
-                                        <span class="button-text">Выберите метод визуализации</span>
-                                    </div>
-                                </button>
-
-                                <ul class="options">
-                                    <li class="option">
-                                        <span class="option-text">GradCam</span>
-                                    </li>
-                                    <li class="option">
-                                        <span class="option-text">CAM</span>
-                                    </li>
-                                    <li class="option">
-                                        <span class="option-text">DeepDream</span>
-                                    </li>
-                                    <li class="option">
-                                        <span class="option-text">t-SNE</span>
-                                    </li>
-                                    <li class="option">
-                                        <span class="option-text">SaliencyMap</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- Кнопка для загрузки фото -->
-                            <button class="input-form__button input-form__button_select" type="button"
-                                id="photo-button">
-                                <span class="plus-icon">+</span>
-                                <span class="button-text">Загрузите изображение</span>
-                            </button>
                         </div>
-                        <button type="submit"
-                            class="input-form__button input-form__button_submit">Визуализировать</button>
+                        <!-- Блок с кнопками -->
+                        <div class="input-form__buttons">
+                            <div class="input-form__select-buttons">
+                                <!-- Селектор для выбора модели -->
+                                <div class="select-menu" id="model-selector">
+                                    <button class="input-form__button input-form__button_select select-btn"
+                                        type="button" id="model-button">
+                                        <div class="sBtn-text">
+                                            <span class="plus-icon">+</span>
+                                            <span class="button-text">Выберите модель</span>
+                                        </div>
+                                    </button>
+
+                                    <ul class="options">
+                                        <li class="option">
+                                            <span class="option-text">VGG16</span>
+                                        </li>
+                                        <li class="option">
+                                            <span class="option-text">AlexNet</span>
+                                        </li>
+                                        <li class="option">
+                                            <span class="option-text">ResNet152</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Селектор для выбора метода визуализации -->
+                                <div class="select-menu" id="method-selector">
+                                    <button class="input-form__button input-form__button_select select-btn"
+                                        type="button" id="model-button">
+                                        <div class="sBtn-text">
+                                            <span class="plus-icon">+</span>
+                                            <span class="button-text">Выберите метод визуализации</span>
+                                        </div>
+                                    </button>
+
+                                    <ul class="options">
+                                        <li class="option">
+                                            <span class="option-text">GradCam</span>
+                                        </li>
+                                        <li class="option">
+                                            <span class="option-text">CAM</span>
+                                        </li>
+                                        <li class="option">
+                                            <span class="option-text">DeepDream</span>
+                                        </li>
+                                        <li class="option">
+                                            <span class="option-text">t-SNE</span>
+                                        </li>
+                                        <li class="option">
+                                            <span class="option-text">SaliencyMap</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Кнопка для загрузки фото -->
+                                <button class="input-form__button input-form__button_select" type="button"
+                                    id="photo-button">
+                                    <span class="plus-icon">+</span>
+                                    <span class="button-text">Загрузите изображение</span>
+                                </button>
+                            </div>
+                            <button type="submit"
+                                class="input-form__button input-form__button_submit">Визуализировать</button>
+                        </div>
+                        <input type="hidden" class="input-hidden input-hidden_model">
+                        <input type="hidden" class="input-hidden input-hidden_method">
+                        <input type="file" class="input-hidden input-hidden_photo" accept="image/*">
                     </div>
-                    <input type="hidden" class="input-hidden input-hidden_model">
-                    <input type="hidden" class="input-hidden input-hidden_method">
-                    <input type="file" class="input-hidden input-hidden_photo" accept="image/*">
+
+                    <div class="additional-params">
+                        <!-- GradCam -->
+                        <div class="additional-params__item" data-method="gradcam">
+                            <label for="guide-gradcam">Guide GradCam</label>
+                            <input type="checkbox" id='guide-gradcam' name="guide">
+                        </div>
+                        <div class="additional-params__item" data-method="gradcam">
+                            <label for="regression-gradcam">Regression GradCam</label>
+                            <input type="checkbox" id='regression-gradcam' name="regression">
+                        </div>
+                        <!-- DeepDream -->
+                        <div class="additional-params__item" data-method="deepdream">
+                            <label for="octaves-deepdream">Количество октав DeepDream</label>
+                            <input type="number" value="6" id='octaves-deepdream' name="octaves">
+                        </div>
+                        <div class="additional-params__item" data-method="deepdream">
+                            <label for="scale_factor-gradcam">Коэффициент масштабирования DeepDream</label>
+                            <input type="range" min="0.1" max="2" value="0.7" step="0.05" id='scale_factor-deepdream'
+                                name="scale_factor" oninput="this.nextElementSibling.textContent = this.value">
+                            <span class="range-text">0.7</span>
+                        </div>
+                        <div class="additional-params__item" data-method="deepdream">
+                            <label for="learning-rate-deepdream">Скорость обучения Adam DeepDream</label>
+                            <input type="range" min="0.1" max="1" value="0.2" step="0.05" id='learning-rate-deepdream'
+                                name="learning_rate" oninput="this.nextElementSibling.textContent = this.value">
+                            <span class="range-text">0.2</span>
+                        </div>
+                        <!-- SaliencyMap -->
+                        <div class="additional-params__item" data-method="saliencymap">
+                            <label for="guide-saliency-map">Guide SaliencyMap</label>
+                            <input type="checkbox" id='guide-saliency-map' name="guide">
+                        </div>
+                        <div class="additional-params__item" data-method="saliencymap">
+                            <label for="regression-saliency-map">Regression SaliencyMap</label>
+                            <input type="checkbox" id='regression-saliency-map' name="regression">
+                        </div>
+                        <!-- t-SNE -->
+                    </div>
                 </div>
 
                 <div class="visualisation-result">
                     <img class="visualisation-result__img">
                 </div>
                 <div class="visualisation-text-result">
-                    
+
                 </div>
 
                 <div class="layer-container">
@@ -147,7 +185,7 @@
                         <div class="range-slider">
                             <div class="label-range">Выбор слоя</div>
                             <input id="layer-range" type="range" name="layer-range" min="0" max="10" step="1"
-                                value="5" />
+                                value="0" />
                         </div>
                     </div>
                     <span class="layer-current"></span>

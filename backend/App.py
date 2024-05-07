@@ -14,6 +14,7 @@ from torchvision.transforms import ToTensor, Resize, Compose
 
 from backend.visualize.GradCam import GradCam
 from backend.visualize.ModelFactory import ModelFactory
+from backend.visualize.MethodFactory import MethodFactory
 from .visualisation.core.utils import image_net_preprocessing, image_net_postprocessing
 
 class App:
@@ -68,20 +69,16 @@ class App:
 
         return resized_base64_image
     
-    def visualize(model_name, method = 'GradCam', number = 0):
+    def visualize(model_name: str, method: str, layer = None, number = 0, options = {}):
         model = ModelFactory.create(model_name)
-        
+        device = App.getDevice()
+        visual = MethodFactory(method, model.to(device), device)
+
         input_image = App.getImageTensor(number)
 
-        device = App.getDevice()
-        vis = GradCam(model.to(device), device)
-
-        img = vis.visualize(input_image.to(device), None,
-          target_class=None,
-          postprocessing=image_net_postprocessing,
-          guide=False)
+        img = visual.callVisualisation(input_image.to(device), layer, options)
         
-        return {'image': App.convertImgFromTensorToBase64(img[0]), 'result': App.get_text_prediction(vis.last_target)}
+        return {'image': App.convertImgFromTensorToBase64(img[0]), 'result': App.get_text_prediction(visual.methodObject.last_target)}
 
     def getImageTensor(number):
         pathToImage = os.path.join(os.path.dirname(__file__), '../temp-images/' + App.getImgNameByNumber(number))

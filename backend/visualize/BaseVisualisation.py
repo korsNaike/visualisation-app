@@ -21,8 +21,12 @@ class BaseVisualisation:
         Инициализация поля self.layer по номеру слоя в модели
         '''
         i = 0
+        layer_number = int(layer_number)
+        print('нужно: ' + str(layer_number))
         for module in self.model.modules():
-                if i == layer_number:
-                    self.layer = module
-                    return
-                i += 1
+            print(str(i) + ' сравним ? ' + str(layer_number) + '\n')
+            if i == layer_number:
+                print("попали, модуль номер = " + str(i) + ' ' +  str(module.__class__.__name__))
+                self.layer = module
+                return
+            i += 1

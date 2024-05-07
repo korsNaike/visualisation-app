@@ -1,0 +1,22 @@
+.additional-params {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 0.5rem;
+    max-height: 200px;
+}
+
+.additional-params__item {
+    display: none;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-wrap: wrap;
+}
+
+.range-text {
+    width: 20px;
+}

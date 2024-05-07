@@ -59,12 +59,14 @@ class Visualisation {
         this.result_photo = this.container.querySelector('.visualisation-result__img');
         this.submit_button = this.container.querySelector('.input-form__button_submit');
         this.layers_input = this.container.querySelector('#layer-range');
+        this.layer_container = this.container.querySelector('.layer-container');
 
         this.initImageLoader();
         this.initSelect("#model-selector", this.model_input);
         this.initSelect("#method-selector", this.method_input);
         this.initVisualisation();
         this.initListenerToModelInput();
+        this.initListenerToMethod();
     }
 
     /**
@@ -139,12 +141,14 @@ class Visualisation {
         element.dispatchEvent(event);
     }
 
+    /**
+     * Добавление слушателя при выборе модели нейронной сети
+     */
     initListenerToModelInput() {
         this.model_input.addEventListener('change', () => {
 
+            //подгружаем доступные слои для данной модели
             eel.get_available_layers(this.model_input.value)(layers => {
-                console.log(layers);
-
                 let countOfLayers = layers.length - 1;
                 this.layers_input.setAttribute('max', countOfLayers);
 
@@ -156,14 +160,23 @@ class Visualisation {
                 if (tick == 0) {
                     tick = 1;
                 }
-                
+
                 let range = new rSlider({
                     element: "#layer-range",
                     tick: tick,
                     data: layers
                 });
                 this.layers_input = copy_layer;
+
+                this.layer_container.style.display = 'flex';
             })
+        })
+    }
+
+    initListenerToMethod() {
+        this.method_input.addEventListener('change', () => {
+            this.hideAllMethods();
+            this.showMethodOptions(this.method_input.value);
         })
     }
 
@@ -172,8 +185,11 @@ class Visualisation {
 
             const method = this.method_input.value;
             const model = this.model_input.value;
+            const options = this.buildOptions(method);
+            const layer = this.layers_input.value;
 
-            eel.visualize(model, method, this.number)(data => {
+            console.log(method, model, options, layer);
+            eel.visualize(model, method, layer, this.number, options)(data => {
                 console.log(data);
                 const resizedBase64Image = data.image;
 
@@ -185,6 +201,52 @@ class Visualisation {
                 this.container.querySelector('.visualisation-text-result').textContent = data.result;
             });
         });
+    }
+
+    /**
+     * Отобразить все доп параметры для метода
+     * @param {string} method 
+     */
+    showMethodOptions(method) {
+        method = method.toLowerCase();
+        const additional_params = this.container.querySelectorAll('.additional-params .additional-params__item[data-method="' + method + '"]');
+
+        additional_params.forEach(additional_param => {
+            additional_param.style.display = 'flex';
+        })
+    }
+
+    /**
+     * Спрятать все доп параметры
+     */
+    hideAllMethods() {
+        const additional_params = this.container.querySelectorAll('.additional-params .additional-params__item');
+
+        additional_params.forEach(additional_param => {
+            additional_param.style.display = 'none';
+        })
+    }
+
+    /**
+     * Построить объект опций по доп параметрам метода
+     * @param {string} method 
+     * @returns {object}
+     */
+    buildOptions(method) {
+        method = method.toLowerCase();
+        const additional_params = this.container.querySelectorAll('.additional-params .additional-params__item[data-method="' + method + '"] input');
+
+        const options = {};
+
+        additional_params.forEach(additional_param => {
+            if (additional_param.getAttribute('type') === 'checkbox') {
+                options[additional_param.name] = additional_param.checked;
+            } else {
+                options[additional_param.name] = additional_param.value;
+            }
+        })
+
+        return options;
     }
 }
 

@@ -24,10 +24,9 @@
 }
 
 .layer-container {
-    display: flex;
+    display: none;
     width: 100%;
     margin-top: 1rem;
-    display: flex;
     gap: 0.5rem;
     flex-direction: column;
     justify-content: center;
@@ -38,4 +37,12 @@
 .layer-text {
     font-size: 1.3rem;
     font-weight: 600;
+}
+
+.visualisation__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }

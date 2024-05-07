@@ -12,8 +12,8 @@ def loadImage(base64_image, number = 0):
     return App.saveLoadImage(base64_image=base64_image, number=number)
 
 @eel.expose
-def visualize(model, method = 'GradCam', number = 0, options = {}):
-    return App.visualize(model, method=method, number=number)
+def visualize(model, method, layer, number = 0, options = {}):
+    return App.visualize(model, method=method, number=number, layer=layer, options=options)
 
 @eel.expose
 def get_available_layers(model):

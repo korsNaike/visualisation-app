@@ -6,6 +6,7 @@ from .BaseVisualisation import BaseVisualisation
 from torch.nn import Conv2d, ReLU
 import torch.nn.functional as torch_func
 from .TensorHelper import TensorHelper
+from backend.visualisation.core.utils import image_net_postprocessing
 
 class GradCam(BaseVisualisation):
 
@@ -49,7 +50,7 @@ class GradCam(BaseVisualisation):
                 self.layer = module
     
 
-    def visualize(self, input_image, layer_number=None, guide=False, target_class=None, postprocessing=lambda x: x, regression=False) -> torch.Tensor:
+    def visualize(self, input_image, layer_number=None, guide=False, regression=False) -> torch.Tensor:
         '''
         Основной вызов для визуализации работы сети
         '''
@@ -67,8 +68,7 @@ class GradCam(BaseVisualisation):
             self.set_guide()
 
         predictions = self.__get_predictions(input_image=input_image)
-        if target_class is None:
-            target_class = self.__get_target_class(predictions)
+        target_class = self.__get_target_class(predictions)
 
         if regression: 
             predictions.backward(gradient=target_class, retain_graph=True)
@@ -83,7 +83,7 @@ class GradCam(BaseVisualisation):
             # пропускаем через relu полученные значения слоя и средние значения градиента для того, чтобы вычислить карту активаций
             self.cam = torch_func.relu(torch.sum(self.conv_outputs[0] * avg_channel_grad[0], dim=0))
 
-            image_with_heatmap = TensorHelper.combineClassActivationMap(postprocessing(input_image.squeeze().cpu()), self.cam)
+            image_with_heatmap = TensorHelper.combineClassActivationMap(image_net_postprocessing(input_image.squeeze().cpu()), self.cam)
 
         self.clean()
         self.last_target = target_class
