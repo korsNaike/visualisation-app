@@ -1,5 +1,4 @@
 import torch
-from torchvision.transforms import ToTensor, Resize, Compose
 from backend.visualize.GradCam import GradCam
 
 class MethodFactory:
@@ -14,7 +13,7 @@ class MethodFactory:
         if (method.lower() == 'gradcam'):
             return GradCam(model=model, device=device)
         
-    def callVisualisation(self, input_image, layer_number: int, options: dict = {}):
+    def callVisualisation(self, input_image: torch.Tensor, layer_number: int, options: dict = {}):
         '''
         Вызвать визуализацию для переданной модели нейронной сети
         '''
