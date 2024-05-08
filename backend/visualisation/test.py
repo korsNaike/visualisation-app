@@ -1,14 +1,14 @@
 import torch
 
 from core import *
-from core.utils import image_net_postprocessing
+from backend.visualize.utilities.utils import image_net_postprocessing
 from PIL import Image
 
 from torchvision.models import alexnet, vgg16, resnet18, resnet152
 from torchvision.transforms import ToTensor, Resize, Compose
 
 import matplotlib.pyplot as plt
-from core.utils import image_net_postprocessing, image_net_preprocessing
+from backend.visualize.utilities.utils import image_net_postprocessing, image_net_preprocessing
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 

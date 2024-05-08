@@ -12,10 +12,8 @@ from PIL import Image
 import matplotlib.pyplot as plt
 from torchvision.transforms import ToTensor, Resize, Compose
 
-from backend.visualize.GradCam import GradCam
-from backend.visualize.ModelFactory import ModelFactory
-from backend.visualize.MethodFactory import MethodFactory
-from .visualisation.core.utils import image_net_preprocessing, image_net_postprocessing
+from backend.visualize.factories import *
+from backend.visualize.utilities import *
 
 class App:
 
@@ -83,9 +81,7 @@ class App:
     def getImageTensor(number):
         pathToImage = os.path.join(os.path.dirname(__file__), '../temp-images/' + App.getImgNameByNumber(number))
         img = Image.open(pathToImage)
-        # resize the image and make it a tensor
         input_image = Compose([Resize((224,224)), ToTensor(), image_net_preprocessing])(img)
-        # add 1 dim for batch
         input_image = input_image.unsqueeze(0)
 
         return input_image
@@ -134,6 +130,8 @@ class App:
         return layers
     
     def get_text_prediction(need_key) -> str:
+        if need_key is None:
+            return ''
         '''
         Найти нужное значение из словаря imagenet
         '''

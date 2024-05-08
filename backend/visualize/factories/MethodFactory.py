@@ -1,5 +1,5 @@
 import torch
-from backend.visualize.GradCam import GradCam
+from backend.visualize.methods import *
 
 class MethodFactory:
         
@@ -13,6 +13,10 @@ class MethodFactory:
         if (method.lower() == 'gradcam'):
             return GradCam(model=model, device=device)
         
+        if (method.lower() == 'deepdream'):
+            print('2')
+            return DeepDream(model=model, device=device)
+        
     def callVisualisation(self, input_image: torch.Tensor, layer_number: int, options: dict = {}):
         '''
         Вызвать визуализацию для переданной модели нейронной сети
@@ -25,3 +29,18 @@ class MethodFactory:
                                                guide=guide,
                                                regression=regression
                                                )
+        
+        if isinstance(self.methodObject, DeepDream):
+            print('1')
+            octaves = int(options.get('octaves', 6))
+            scale_factor = float(options.get('scale_factor', 0.7))
+            lr = float(options.get('lr', 0.1))
+            
+            return self.methodObject.visualize(input_image, 
+                                               layer_number,
+                                               octaves=octaves,
+                                               scale_factor=scale_factor,
+                                               lr=lr
+                                               )
+        
+        

@@ -8,7 +8,7 @@ from .Base import Base
 from torch.nn import AvgPool2d, Conv2d, Linear, ReLU, MaxPool2d, BatchNorm2d
 import torch.nn.functional as F
 
-from .utils import tensor2cam, module2traced, imshow
+from ...visualize.utilities.utils import tensor2cam, module2traced, imshow
 
 class GradCam(Base):
     def __init__(self, *args, **kwargs):

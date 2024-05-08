@@ -5,7 +5,7 @@ from torch.nn.functional import softmax
 
 from .Base import Base
 
-from .utils import module2traced, imshow, tensor2cam
+from ...visualize.utilities.utils import module2traced, imshow, tensor2cam
 
 import torch.nn.functional as F
 

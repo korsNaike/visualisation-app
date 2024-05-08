@@ -3,13 +3,12 @@ import torchvision.transforms.functional as TF
 
 from torch.autograd import Variable
 from PIL import Image, ImageFilter, ImageChops
-from .Base import Base
-from ...visualize.utilities.utils import image_net_postprocessing, \
-    image_net_preprocessing
+from backend.visualize.methods import BaseVisualisation
+from backend.visualize.utilities import *
 
-class DeepDream(Base):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+class DeepDream(BaseVisualisation):
+    def __init__(self, model, device):
+        super().__init__(model, device)
         self.handle = None
 
     def register_hooks(self):
@@ -30,7 +29,7 @@ class DeepDream(Base):
 
     def step(self, image, steps=5, save=False):
 
-        self.module.zero_grad()
+        self.model.zero_grad()
         image_pre = image_net_preprocessing(image.squeeze().cpu()).to(self.device).unsqueeze(0)
         self.image_var = Variable(image_pre, requires_grad=True).to(self.device)
 
@@ -38,7 +37,7 @@ class DeepDream(Base):
 
         for i in range(steps):
             try:
-                self.module(self.image_var)
+                self.model(self.image_var)
             except:
                 pass
 
@@ -76,14 +75,17 @@ class DeepDream(Base):
 
         return self.step(image, steps=8, save=top == n + 1)
 
-    def __call__(self, inputs, layer, octaves=6, scale_factor=0.7, lr=0.1):
-        self.layer, self.lr = layer, lr
+    def visualize(self, inputs, layer_number, octaves=6, scale_factor=0.7, lr=0.1):
+        self.init_layer_by_number(layer_number)
+        print(self.layer)
+        self.lr = lr
         self.handle = self.register_hooks()
-        self.module.zero_grad()
+        self.model.zero_grad()
+        self.last_target = None
 
         dd = self.deep_dream(inputs, octaves,
                              top=octaves,
                              scale_factor=scale_factor)
         self.handle.remove()
 
-        return dd.unsqueeze(0), {}
+        return dd.unsqueeze(0)

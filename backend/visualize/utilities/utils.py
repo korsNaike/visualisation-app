@@ -77,30 +77,3 @@ def convert_to_grayscale(cv2im):
     grayscale_im = (np.clip((grayscale_im - im_min) / (im_max - im_min), 0, 1))
     grayscale_im = np.expand_dims(grayscale_im, axis=0)
     return grayscale_im
-
-def imshow(tensor):
-    tensor = tensor.squeeze()
-    if len(tensor.shape) > 2: tensor = tensor.permute(1, 2, 0)
-    img = tensor.cpu().numpy()
-    plt.imshow(img, cmap='gray')
-    plt.show()
-
-def module2traced(module, inputs):
-    handles, modules = [], []
-
-    def trace(module, inputs, outputs):
-        modules.append(module)
-
-    def traverse(module):
-        for m in module.children():
-            traverse(m)
-        is_leaf = len(list(module.children())) == 0
-        if is_leaf: handles.append(module.register_forward_hook(trace))
-
-    traverse(module)
-
-    _ = module(inputs)
-
-    [h.remove() for h in handles]
-
-    return modules

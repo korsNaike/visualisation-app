@@ -1,12 +1,11 @@
 import torch
+import torch.nn.functional as torch_func
 
 from torch.nn import ReLU
 from torch.autograd import Variable
-from .BaseVisualisation import BaseVisualisation
 from torch.nn import Conv2d, ReLU
-import torch.nn.functional as torch_func
-from .TensorHelper import TensorHelper
-from backend.visualisation.core.utils import image_net_postprocessing
+from backend.visualize.methods import BaseVisualisation
+from backend.visualize.utilities import *
 
 class GradCam(BaseVisualisation):
 
