@@ -5,11 +5,7 @@ import json
 from datetime import datetime
 import numpy as np
 import torch
-from torchvision.models import alexnet, vgg16, resnet18, resnet152
-import torchvision.transforms.functional as TF
-import torchvision.transforms as TRANSFORMS
 from PIL import Image
-import matplotlib.pyplot as plt
 from torchvision.transforms import ToTensor, Resize, Compose
 
 from backend.visualize.factories import *

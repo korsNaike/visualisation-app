@@ -7,11 +7,7 @@ from backend.visualize.utilities.utils import convert_to_grayscale
 from backend.visualize.methods.BaseVisualisation import BaseVisualisation
 
 class SaliencyMap(BaseVisualisation):
-    """
-    Simonyan, Vedaldi, and Zisserman, “Deep Inside Convolutional Networks: Visualising Image Classification Models
-    and Saliency Maps”, ICLR Workshop 2014
-    https://arxiv.org/abs/1312.6034
-    """
+
     def __init__(self, model, device):
         super().__init__(model, device)
         self.gradients = None

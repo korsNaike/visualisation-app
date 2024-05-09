@@ -1,10 +1,4 @@
 import eel
-from PIL import Image
-import base64
-import io
-import os
-import json
-from datetime import datetime
 from backend.App import App
 
 @eel.expose
