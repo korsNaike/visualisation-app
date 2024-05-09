@@ -1,5 +1,5 @@
 import torch
-from torchvision.models import resnet152, alexnet, vgg16
+from torchvision.models import resnet152, alexnet, vgg16, resnet18
 
 class ModelFactory:
 
@@ -12,5 +12,8 @@ class ModelFactory:
         
         if model.lower() == 'alexnet':
             return alexnet(weights='AlexNet_Weights.IMAGENET1K_V1')
+        
+        if model.lower() == 'resnet18':
+            return resnet18(weights='ResNet18_Weights.IMAGENET1K_V1')
         
         return False
