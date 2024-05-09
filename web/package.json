@@ -1,0 +1,14 @@
+{
+  "name": "visualisation-cnn-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kors Naike",
+  "license": "ISC",
+  "dependencies": {
+    "noty": "^3.2.0-beta-deprecated"
+  }
+}

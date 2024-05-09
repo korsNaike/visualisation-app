@@ -14,16 +14,24 @@ class MethodFactory:
             return GradCam(model=model, device=device)
         
         if (method.lower() == 'deepdream'):
-            print('2')
             return DeepDream(model=model, device=device)
+        
+        if (method.lower() == 'saliencymap'):
+            return SaliencyMap(model=model, device=device)
+        
+        if (method.lower() == 'cam'):
+            return Cam(model=model, device=device)
         
     def callVisualisation(self, input_image: torch.Tensor, layer_number: int, options: dict = {}):
         '''
         Вызвать визуализацию для переданной модели нейронной сети
         '''
-        if isinstance(self.methodObject, GradCam):
+
+        # Проверяем соответствие классов, в зависимости от метода загружаем опциональные параметры и вызываем метод визуализации
+        if isinstance(self.methodObject, GradCam) or isinstance(self.methodObject, SaliencyMap):
             regression = bool(options.get('regression', False))
             guide = bool(options.get('guide', False))
+
             return self.methodObject.visualize(input_image, 
                                                layer_number, 
                                                guide=guide,
@@ -31,7 +39,6 @@ class MethodFactory:
                                                )
         
         if isinstance(self.methodObject, DeepDream):
-            print('1')
             octaves = int(options.get('octaves', 6))
             scale_factor = float(options.get('scale_factor', 0.7))
             lr = float(options.get('lr', 0.1))
@@ -43,4 +50,6 @@ class MethodFactory:
                                                lr=lr
                                                )
         
+        if isinstance(self.methodObject, Cam):
+            return self.methodObject.visualize(input_image)
         

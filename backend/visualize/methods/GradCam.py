@@ -14,7 +14,7 @@ class GradCam(BaseVisualisation):
         self.gradients = None
         self.conv_outputs = None
 
-    def store_outputs_and_grad(self):
+    def init_hooks_for_store(self):
         '''
         Установить обработчики на слой для сохранения значений активации при прямом и обратном проходе по сети
         '''
@@ -61,13 +61,13 @@ class GradCam(BaseVisualisation):
         else:
             self.init_layer_by_number(layer_number)
 
-        self.store_outputs_and_grad()
+        self.init_hooks_for_store()
 
         if guide:
             self.set_guide()
 
         predictions = self.__get_predictions(input_image=input_image)
-        target_class = self.__get_target_class(predictions)
+        target_class = self._get_target_class(predictions)
 
         if regression: 
             predictions.backward(gradient=target_class, retain_graph=True)
@@ -88,16 +88,10 @@ class GradCam(BaseVisualisation):
         self.last_target = target_class
 
         return image_with_heatmap.unsqueeze(0)
-    
-    def get_last_target(self):
-        return self.last_target
-    
+
     def __get_predictions(self, input_image):
         data_for_input = Variable(input_image, requires_grad=True).to(self.device)
         return self.model(data_for_input)
     
-    def __get_target_class(self, predictions):
-        _, target_class = torch.max(predictions, dim=1)
-        return target_class
 
 

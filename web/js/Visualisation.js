@@ -168,7 +168,9 @@ class Visualisation {
                 });
                 this.layers_input = copy_layer;
 
-                this.layer_container.style.display = 'flex';
+                if (this.method_input.value !== 'CAM') {
+                    this.layer_container.style.display = 'flex';
+                }
             })
         })
     }
@@ -187,6 +189,18 @@ class Visualisation {
             const model = this.model_input.value;
             const options = this.buildOptions(method);
             const layer = this.layers_input.value;
+
+            if (method === 'CAM' && model !== 'ResNet152') {
+                new Noty({
+                    type: 'error',
+                    layout   : 'topCenter',
+                    theme    : 'mint',
+                    timeout: 1500,
+                    text: 'Метод CAM пока поддерживает только модель ResNet152'
+                }).show();
+
+                return;
+            }
 
             console.log(method, model, options, layer);
             eel.visualize(model, method, layer, this.number, options)(data => {
@@ -214,6 +228,10 @@ class Visualisation {
         additional_params.forEach(additional_param => {
             additional_param.style.display = 'flex';
         })
+
+        if (method === 'cam') {
+            this.layer_container.style.display = 'none';
+        }
     }
 
     /**
@@ -225,6 +243,8 @@ class Visualisation {
         additional_params.forEach(additional_param => {
             additional_param.style.display = 'none';
         })
+
+        this.layer_container.style.display = 'flex';
     }
 
     /**

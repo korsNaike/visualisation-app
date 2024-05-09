@@ -1,19 +1,19 @@
 import torch
 
-from .Base import Base
 from torch.nn import ReLU
 from torch.autograd import Variable
 from torchvision.transforms import *
-from ...visualize.utilities.utils import convert_to_grayscale
+from backend.visualize.utilities.utils import convert_to_grayscale
+from backend.visualize.methods.BaseVisualisation import BaseVisualisation
 
-class SaliencyMap(Base):
+class SaliencyMap(BaseVisualisation):
     """
     Simonyan, Vedaldi, and Zisserman, “Deep Inside Convolutional Networks: Visualising Image Classification Models
     and Saliency Maps”, ICLR Workshop 2014
     https://arxiv.org/abs/1312.6034
     """
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, model, device):
+        super().__init__(model, device)
         self.gradients = None
         self.handles = []
         self.stored_grad = False
@@ -25,7 +25,7 @@ class SaliencyMap(Base):
         def store_grad(module, grad_in, grad_out):
             self.gradients = grad_in[0]
 
-        for module in self.module.modules():
+        for module in self.model.modules():
             if count == self.layer_number:
                 self.handles.append(module.register_full_backward_hook(store_grad))
                 self.stored_grad = True
@@ -39,19 +39,28 @@ class SaliencyMap(Base):
             if isinstance(module, ReLU):
                 self.handles.append(module.register_backward_hook(guide_relu))
 
-    def __call__(self, input_image, layer_number = 0, guide=False, target_class=None, regression=False):
+    def prepare_nn(self):
+        '''
+        Предобработка модели
+        '''
+        for module in self.model.modules():
+            if isinstance(module, ReLU):
+                module.inplace = False
+
+    def visualize(self, input_image, layer_number = 0, guide=False, target_class=None, regression=False):
         self.stored_grad = False
-        self.layer_number = layer_number
-        self.module.zero_grad()
+        self.layer_number = int(layer_number)
+        self.model.zero_grad()
+        self.prepare_nn()
 
         self.clean()
-        if guide: self.guide(self.module)
+        if guide: self.guide(self.model)
 
         input_image = Variable(input_image, requires_grad=True).to(self.device)
 
         self.store_first_layer_grad()
 
-        predictions = self.module(input_image)
+        predictions = self.model(input_image)
 
         if target_class is None: values, target_class = torch.max(predictions, dim=1)
 

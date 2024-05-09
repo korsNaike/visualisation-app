@@ -1,5 +1,8 @@
+import torch
+
 from abc import abstractmethod
 from typing import Any
+
 
 from torch import Tensor
 
@@ -30,3 +33,12 @@ class BaseVisualisation:
                 self.layer = module
                 return
             i += 1
+   
+    def get_last_target(self):
+        return self.last_target
+    
+    def _get_target_class(self, predictions):
+        _, target_class = torch.max(predictions, dim=1)
+        return target_class
+    
+    
