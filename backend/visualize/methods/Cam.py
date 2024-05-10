@@ -65,6 +65,7 @@ class Cam(BaseVisualisation):
             image_with_heatmap = TensorHelper.combineClassActivationMap(image_net_postprocessing(input_image.squeeze().cpu()), cam)
 
         self.last_target = target_class
+        print(self.last_target)
 
         return image_with_heatmap.unsqueeze(0)
     

@@ -190,7 +190,7 @@ class Visualisation {
             const options = this.buildOptions(method);
             const layer = this.layers_input.value;
 
-            if (method === 'CAM' && model !== 'ResNet152') {
+            if (method === 'CAM' && model !== 'ResNet152' && model !== 'ResNet18') {
                 new Noty({
                     type: 'error',
                     layout   : 'topCenter',
