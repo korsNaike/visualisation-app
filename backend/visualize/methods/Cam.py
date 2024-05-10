@@ -64,6 +64,7 @@ class Cam(BaseVisualisation):
         with torch.no_grad():
             image_with_heatmap = TensorHelper.combineClassActivationMap(image_net_postprocessing(input_image.squeeze().cpu()), cam)
 
+        self.clean()
         self.last_target = target_class
         print(self.last_target)
 

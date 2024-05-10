@@ -94,6 +94,9 @@ class App:
         # Преобразование numpy array в изображение PIL
         image = Image.fromarray(np.uint8(numpy_array * 255))
 
+        # Изменение размера и качества изображения
+        image = image.resize((600, 600), resample=Image.BICUBIC)
+
         # Преобразование изображения в байтовый поток
         buffer = io.BytesIO()
         image.save(buffer, format="PNG")
