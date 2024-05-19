@@ -1,20 +1,20 @@
-# Описание
+# Description
 
-Приложение с веб-интерфейсом для визуализации работы нейронных сетей, решающих задачу классификации.
+An application with a web interface for visualizing the work of neural networks solving the classification problem.
 
-# Установка
+# Installation
 
-## Через pip
+## pip
 ```
 pip install -r requirements.txt
 pip3 install torch==2.3.0 torchvision==0.18.0 torchaudio==2.3.0 --index-url https://download.pytorch.org/whl/cu121
 ```
 
-## Через Poetry
+## Poetry
 ```
 poetry install
 ```
-### Поддержка CUDA
+### CUDA support
 ```
 poetry add torch==2.3.0+cu121 --source torch
 ```
