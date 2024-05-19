@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 class NormalizeInverse(Normalize):
     """
-    Undoes the normalization and returns the reconstructed images in the input domain.
+    Отменить эффект нормализации
     """
     def __init__(self, mean, std):
         mean = torch.Tensor(mean)
@@ -47,7 +47,7 @@ def tensor2cam(image, cam):
 def image2cam(image, cam):
     h, w, c = image.shape
     cam -= np.min(cam)
-    cam /= np.max(cam)  # Normalize between 0-1
+    cam /= np.max(cam)  # Нормализация
     cam = cv2.resize(cam, (w,h))
 
     cam = np.uint8(cam * 255.0)
@@ -59,18 +59,7 @@ def image2cam(image, cam):
     return img_with_cam
 
 
-def convert_to_grayscale(cv2im):
-    """
-        Converts 3d image to grayscale
-
-    Args:
-        cv2im (numpy arr): RGB image with shape (D,W,H)
-
-    returns:
-        grayscale_im (numpy_arr): Grayscale image with shape (1,W,D)
-
-    credits to https://github.com/utkuozbulak/pytorch-cnn-visualizations
-    """
+def  convert_to_grayscale(cv2im):
     grayscale_im = np.sum(np.abs(cv2im), axis=0)
     im_max = np.percentile(grayscale_im, 99)
     im_min = np.min(grayscale_im)
